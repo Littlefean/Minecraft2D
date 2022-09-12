@@ -24,12 +24,12 @@ enum GameObject {
 
 unordered_map<GameObject, string> objectToStr{
         make_pair(air, "  "),
-        make_pair(stone, "Ê¯"),
+        make_pair(stone, "  "),
         make_pair(water, "Ë®"),
         make_pair(grass, "²İ"),
         make_pair(leave, "Ò¶"),
         make_pair(dirt, "Äà"),
-        make_pair(wood, "Ê÷"),
+        make_pair(wood, "Ä¾"),
         make_pair(sapling, "Ãç"),
         make_pair(apple, "¹û"),
         make_pair(barrier, "X "),

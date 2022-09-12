@@ -66,7 +66,7 @@ private:
             }
             this->player.loc.x += dx;
             this->player.loc.y += dy;
-            this->player.hunger.change(-0.1);
+            this->player.hunger.change(-0.01);
             // 前方方块是否是掉落物？
             if (isBlockCanPickUp(hinder)) {
                 this->setBlock(air, this->player.loc.x, this->player.loc.y);
@@ -240,7 +240,6 @@ public:
      * 世界进行一次演化
      */
     void tick() {
-        // todo 只更新视野范围内的
         // 玩家状态更新
         // 气的关系
         if (this->getBlock(this->player.loc) == water) {
@@ -267,8 +266,9 @@ public:
             cout << "game Over!!!" << endl;
         }
         // 植被更新
-        for (int y = 0; y < this->height; y++) {
-            for (int x = 0; x < this->width; x++) {
+        int updateRange = this->renderRadius + 2;
+        for (int y = this->player.loc.y - updateRange; y <= this->player.loc.y + updateRange; y++) {
+            for (int x = this->player.loc.x - updateRange; x <= this->player.loc.x + updateRange; x++) {
                 if (this->getBlock(x, y) == leave) {
                     if (this->isLeaveLossRoot(Vec(x, y))) {
                         // 有20%的几率销毁
@@ -386,7 +386,7 @@ public:
 
 
 int main() {
-    World g(20, 20);
+    World g(100, 100);
     g.play();
     // g.testPlay();
     // for (int i = 0; i < 10; i++) {
