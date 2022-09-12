@@ -104,6 +104,7 @@ public:
         }
 
         WorldGenerator::mountain(this->content);
+        WorldGenerator::genOre(this->content);
         WorldGenerator::planTree(this->content);
         WorldGenerator::pool(this->content);
         // 寻找出生点
@@ -302,9 +303,10 @@ public:
                 // exit
                 break;
             }
-            if (key == 32) {
-                // 空格键 切换物品栏指针
-                this->player.itemIndexPlus();
+            if (48 <= key && key <= 57) {
+                // 数字 切换物品栏指针
+                this->player.setItemIndex(key - 48);
+
             }
             if (key == 224) {
                 continue;
@@ -314,7 +316,7 @@ public:
                 this->tick();
                 Vec playerFacedLoc = this->player.loc + this->player.speed;
                 GameObject hinder = this->getBlock(playerFacedLoc);
-                if (key == 122) {
+                if (key == 32) {
                     // z 使用左键攻击、挖掘
                     if (isBlockCanDig(hinder)) {
                         // 玩家可以破坏方块
@@ -323,7 +325,7 @@ public:
                         this->player.hunger.change(-0.2);
                     }
                 }
-                if (key == 120) {
+                if (key == 13) {
                     // x 使用右键
                     GameObject handObj = this->player.getHandedObject();
                     if (isEatable(handObj)) {

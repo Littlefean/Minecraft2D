@@ -24,12 +24,16 @@ enum GameObject {
     stick = 518,
     workbench = 96, // 工作台
     woodDraft = 774, // 木稿子
+    ironBlock = 135,
+    coalBlock = 128,
+    goldBlock = 142,
+    diamondBlock = 139,
 };
 
 unordered_map<GameObject, string> objectToStr{
         make_pair(barrier, "X "),
         make_pair(air, "  "),
-        make_pair(stone, "`."),
+        make_pair(stone, "  "),
         make_pair(water, "水"),
         make_pair(grass, "草"),
         make_pair(leave, "叶"),
@@ -40,6 +44,10 @@ unordered_map<GameObject, string> objectToStr{
         make_pair(board, "板"),
         make_pair(stick, "棍"),
         make_pair(workbench, "台"),
+        make_pair(ironBlock, "^v"),
+        make_pair(coalBlock, "%%"),
+        make_pair(goldBlock, "*."),
+        make_pair(diamondBlock, "<>"),
 };
 
 // 是否可穿过

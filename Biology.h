@@ -94,6 +94,10 @@ public:
         return this->item[this->itemIndex];
     }
 
+    void setItemIndex(int n) {
+        this->itemIndex = n;
+    }
+
     void itemIndexPlus() {
         this->itemIndex++;
         if (this->itemIndex == this->item.size()) {

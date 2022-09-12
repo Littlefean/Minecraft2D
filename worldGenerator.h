@@ -185,13 +185,52 @@ public:
         }
     }
 
+    /// 生成矿石
+    static void genOre(vector<vector<GameObject>> &world) {
+        // 铁矿
+        NoiseSet2D ironNoise(3154.52);
+        ironNoise.addNoise(5, 20);
+        ironNoise.addNoise(5, 25);
+        ironNoise.addNoise(5, 5);
+        NoiseSet2D coalNoise(12.52);
+        coalNoise.addNoise(5, 20);
+        coalNoise.addNoise(5, 25);
+        coalNoise.addNoise(5, 5);
+        NoiseSet2D goldNoise(12.52);
+        goldNoise.addNoise(5, 10);
+        goldNoise.addNoise(2, 10);
+        goldNoise.addNoise(3, 10);
+        NoiseSet2D diamondsNoise(12.52);
+        diamondsNoise.addNoise(5, 10);
+        diamondsNoise.addNoise(2, 10);
+        diamondsNoise.addNoise(3, 10);
+        for (int y = 0; y < world.size(); y++) {
+            for (int x = 0; x < world[y].size(); x++) {
+
+                if (world[y][x] == stone && diamondsNoise.getHeight(x, y) > 10) {
+                    world[y][x] = diamondBlock;
+                }
+                if (world[y][x] == stone && goldNoise.getHeight(x, y) > 10) {
+                    world[y][x] = goldBlock;
+                }
+                if (world[y][x] == stone && coalNoise.getHeight(x, y) > 10) {
+                    world[y][x] = coalBlock;
+                }
+                if (world[y][x] == stone && ironNoise.getHeight(x, y) > 10) {
+                    world[y][x] = ironBlock;
+                }
+
+            }
+        }
+    }
+
     /// 生成小水坑
     static void pool(vector<vector<GameObject>> &world) {
         int seed = 16584;
         default_random_engine e(seed);
 
-        for (auto & y : world) {
-            for (auto & x : y) {
+        for (auto &y: world) {
+            for (auto &x: y) {
                 if (x == air && e() % 100 < 5) {
                     x = water;
                 }
