@@ -1,0 +1,5 @@
+cmake-build-debug
+test.cpp
+*.exe
+.idea
+CMakeLists.txt
