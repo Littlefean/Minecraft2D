@@ -320,8 +320,10 @@ public:
                     // z Ê¹ÓÃ×ó¼ü¹¥»÷¡¢ÍÚ¾ò
                     if (isBlockCanDig(hinder)) {
                         // Íæ¼Ò¿ÉÒÔÆÆ»µ·½¿é
-                        this->player.getObject(hinder);
-                        this->setBlock(air, playerFacedLoc);
+                        if (this->player.digBlock(hinder)) {
+                            // ÆÆ»µ³É¹¦
+                            this->setBlock(air, playerFacedLoc);
+                        }
                         this->player.hunger.change(-0.2);
                     }
                 }

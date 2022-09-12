@@ -5,6 +5,7 @@
 #ifndef C__LEARN_BIOLOGY_H
 #define C__LEARN_BIOLOGY_H
 
+#include <random>
 #include "Vec.h"
 #include "ProgressBar.h"
 #include "object.h"
@@ -15,8 +16,12 @@ enum BiologyState {
     burring = 78,
     dead = 71,
 };
+int biologySeed = 1535;
+default_random_engine Eo(biologySeed);
 
 class Biology {
+private:
+
 
 public:
 
@@ -61,6 +66,34 @@ public:
             }
         }
         this->pack[obj]++;
+    }
+
+    /**
+     * 挖掘方块
+     * 返回这个方块是否被挖碎了
+     * @param obj
+     *
+     */
+    bool digBlock(GameObject obj) {
+        // 根据手上的工具获取当前的挖掘等级
+        int digLevel = 0;
+        GameObject tool = this->getHandedObject();
+        if (ToolDigLevel.contains(tool)) {
+            digLevel = ToolDigLevel[tool];
+        }
+
+        int seed = (int) time(nullptr);
+        default_random_engine e(seed);
+        uniform_real_distribution<double> u(0, 1);
+        if (u(e) <= BlockHardnessTable[obj] + digLevel * 0.1) {
+            // 挖掘成功
+            if (BlockDigCondition[obj] <= digLevel) {
+                this->getObject(obj);
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

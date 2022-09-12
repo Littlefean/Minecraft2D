@@ -24,30 +24,39 @@ enum GameObject {
     stick = 518,
     workbench = 96, // 工作台
     woodDraft = 774, // 木稿子
+    stoneDraft = 7 + 256,
+    ironDraft = 7 + 256 * 2,
+    diamondDraft = 7 + 256 * 3,
     ironBlock = 135,
     coalBlock = 128,
     goldBlock = 142,
     diamondBlock = 139,
+    brokenStone = 391,
 };
 
 unordered_map<GameObject, string> objectToStr{
-        make_pair(barrier, "X "),
-        make_pair(air, "  "),
-        make_pair(stone, "  "),
-        make_pair(water, "水"),
-        make_pair(grass, "草"),
-        make_pair(leave, "叶"),
-        make_pair(dirt, "泥"),
-        make_pair(wood, "木"),
-        make_pair(sapling, "苗"),
-        make_pair(apple, "果"),
-        make_pair(board, "板"),
-        make_pair(stick, "棍"),
-        make_pair(workbench, "台"),
-        make_pair(ironBlock, "^v"),
-        make_pair(coalBlock, "%%"),
-        make_pair(goldBlock, "*."),
-        make_pair(diamondBlock, "<>"),
+        {barrier,      "X "},
+        {brokenStone,  "╳╳"},
+        {air,          "  "},
+        {stone,        "  "},
+        {water,        "水"},
+        {grass,        "草"},
+        {leave,        "叶"},
+        {dirt,         "泥"},
+        {wood,         "木"},
+        {sapling,      "苗"},
+        {apple,        "果"},
+        {board,        "板"},
+        {stick,        "棍"},
+        {workbench,    "╤╤"},
+        {ironBlock,    "^v"},
+        {coalBlock,    "%%"},
+        {goldBlock,    "*."},
+        {diamondBlock, "<>"},
+        {woodDraft,    "稿"},
+        {stoneDraft,   "稿"},
+        {ironDraft,    "稿"},
+        {diamondDraft, "稿"},
 };
 
 // 是否可穿过
@@ -67,13 +76,49 @@ bool isBlockCanPickUp(GameObject o) {
     return false;
 }
 
+/**
+ * 方块硬度表
+ * 方块硬度  挖爆他的概率
+ */
+unordered_map<GameObject, double> BlockHardnessTable{
+        {grass,        1},
+        {wood,         0.5},
+        {dirt,         0.7},
+        {stone,        0.1},
+        {coalBlock,    0.1},
+        {ironBlock,    0.1},
+        {goldBlock,    0.1},
+        {diamondBlock, 0.1},
+};
+/**
+ * 方块的挖掘等级限制
+ * 左侧方块被破坏至少需要多少级的破坏力
+ */
+unordered_map<GameObject, int> BlockDigCondition{
+        {grass,        0},
+        {wood,         0},
+        {dirt,         0},
+        {stone,        1},
+        {coalBlock,    2},
+        {ironBlock,    2},
+        {goldBlock,    3},
+        {diamondBlock, 3},
+};
+
+/**
+ * 工具附加挖掘等级
+ *
+ */
+unordered_map<GameObject, int> ToolDigLevel{
+        {woodDraft, 1},
+        {stoneDraft, 2},
+        {ironDraft, 3},
+        {diamondDraft, 4},
+};
+
 // 左键效果
 bool isBlockCanDig(GameObject o) {
-    if (o == grass || o == wood) {
-        return true;
-    } else {
-        return false;
-    }
+    return BlockHardnessTable.find(o) != BlockHardnessTable.end();
 }
 
 // 右键效果
