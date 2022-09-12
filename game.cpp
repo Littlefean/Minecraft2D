@@ -33,6 +33,13 @@ private:
         }
     }
 
+    void setBlock(GameObject n, Vec loc) {
+        if ((0 <= loc.x && loc.x < this->width) && (0 <= loc.y && loc.y < this->height)) {
+            this->content[loc.y][loc.x] = n;
+        }
+    }
+
+
     GameObject getBlock(int x, int y) {
         if ((0 <= x && x < this->width) && (0 <= y && y < this->height)) {
             return this->content[y][x];
@@ -74,14 +81,7 @@ private:
             }
 
         } else {
-            // todo
             // 玩家被阻挡不能移动
-            if (isBlockCanDig(hinder)) {
-                // 玩家可以破坏方块
-                this->player.getObject(hinder);
-                this->setBlock(air, player.loc.x + dx, player.loc.y + dy);
-                this->player.hunger.change(-0.2);
-            }
         }
     }
 
@@ -331,16 +331,31 @@ public:
                 // tick
                 system("cls");
                 this->tick();
+                Vec playerFacedLoc = this->player.loc + this->player.speed;
+                GameObject hinder = this->getBlock(playerFacedLoc);
                 if (key == 122) {
                     // z 使用左键攻击、挖掘
+                    // todo
 
+                    if (isBlockCanDig(hinder)) {
+                        // 玩家可以破坏方块
+                        this->player.getObject(hinder);
+                        this->setBlock(air, playerFacedLoc);
+                        this->player.hunger.change(-0.2);
+                    }
                 }
                 if (key == 120) {
                     // x 使用右键
                     GameObject handObj = this->player.getHandedObject();
                     if (isEatable(handObj)) {
                         this->player.eat(handObj);
+                    } else if (isBlockPut(handObj) && isBlockBeCover(hinder)) {
+                        this->setBlock(handObj, playerFacedLoc);
+                        this->player.loseObject(handObj);
+                    } else {
+
                     }
+                    this->player.hunger.change(-0.05);
                 }
                 /// 移动
                 if (key == 72) {

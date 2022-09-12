@@ -35,6 +35,7 @@ unordered_map<GameObject, string> objectToStr{
         make_pair(barrier, "X "),
 };
 
+// 是否可穿过
 bool isBlockCanThrough(GameObject o) {
     if (o == air || o == water || o == grass || o == sapling || o == apple || o == leave) {
         return true;
@@ -43,6 +44,7 @@ bool isBlockCanThrough(GameObject o) {
     }
 }
 
+// 是否可以拾起
 bool isBlockCanPickUp(GameObject o) {
     if (o == sapling || o == apple) {
         return true;
@@ -50,6 +52,7 @@ bool isBlockCanPickUp(GameObject o) {
     return false;
 }
 
+// 左键效果
 bool isBlockCanDig(GameObject o) {
     if (o == grass || o == wood) {
         return true;
@@ -61,6 +64,14 @@ bool isBlockCanDig(GameObject o) {
 // 右键效果
 bool isBlockPut(GameObject o) {
     if (o == wood || o == dirt || o == sapling || o == stone) {
+        return true;
+    }
+    return false;
+}
+
+// 这个方块是否可以被放置覆盖
+bool isBlockBeCover(GameObject o) {
+    if (o == air) {
         return true;
     }
     return false;

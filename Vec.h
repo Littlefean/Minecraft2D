@@ -31,6 +31,11 @@ public:
         return false;
     }
 
+    Vec operator+(const Vec &v) const {
+        Vec res{this->x + v.x, this->y + v.y};
+        return res;
+    }
+
     bool operator==(const Vec &v) const {
         return v.x == this->x && v.y == this->y;
     }
