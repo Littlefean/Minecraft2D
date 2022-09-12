@@ -10,6 +10,7 @@
 using namespace std;
 
 enum GameObject {
+    barrier = 0,
     air = 7,
     stone = 112,
     water = 17,
@@ -19,10 +20,14 @@ enum GameObject {
     wood = 6,
     apple = 13,
     sapling = 266, // 树苗
-    barrier = 0,
+    board = 262,
+    stick = 518,
+    workbench = 96, // 工作台
+    woodDraft = 774, // 木稿子
 };
 
 unordered_map<GameObject, string> objectToStr{
+        make_pair(barrier, "X "),
         make_pair(air, "  "),
         make_pair(stone, "  "),
         make_pair(water, "水"),
@@ -32,7 +37,9 @@ unordered_map<GameObject, string> objectToStr{
         make_pair(wood, "木"),
         make_pair(sapling, "苗"),
         make_pair(apple, "果"),
-        make_pair(barrier, "X "),
+        make_pair(board, "板"),
+        make_pair(stick, "棍"),
+        make_pair(workbench, "台"),
 };
 
 // 是否可穿过
@@ -87,6 +94,30 @@ bool isEatable(GameObject o) {
     }
     return false;
 }
+
+namespace Recipe {
+    unordered_map<GameObject, int> boardRecipe{
+            make_pair(wood, 1),
+    };
+    unordered_map<GameObject, int> workbenchRecipe{
+            make_pair(board, 4),
+    };
+    unordered_map<GameObject, int> stickRecipe{
+            make_pair(board, 2),
+    };
+    unordered_map<GameObject, int> woodDraftRecipe{
+            make_pair(board, 3),
+            make_pair(stick, 2),
+    };
+
+}
+using namespace Recipe;
+unordered_map<GameObject, pair<unordered_map<GameObject, int>, int>> RecipeTable{
+        make_pair(board, make_pair(boardRecipe, 4)),
+        make_pair(workbench, make_pair(workbenchRecipe, 1)),
+        make_pair(stick, make_pair(stickRecipe, 4)),
+        make_pair(woodDraft, make_pair(woodDraftRecipe, 1)),
+};
 
 
 #endif //C__LEARN_OBJECT_H

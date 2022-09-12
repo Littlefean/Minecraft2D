@@ -28,6 +28,9 @@ public:
     BiologyState state = normal;
     // 物品栏
     vector<GameObject> item = {air, air, air, air, air, air, air, air, air, air};
+    // 可合成的物品列表
+    vector<GameObject> availableList{};
+
     int itemIndex = 0;  // 当前选定的是哪个
     unordered_map<GameObject, int> pack;
 

@@ -335,8 +335,6 @@ public:
                 GameObject hinder = this->getBlock(playerFacedLoc);
                 if (key == 122) {
                     // z Ê¹ÓÃ×ó¼ü¹¥»÷¡¢ÍÚ¾ò
-                    // todo
-
                     if (isBlockCanDig(hinder)) {
                         // Íæ¼Ò¿ÉÒÔÆÆ»µ·½¿é
                         this->player.getObject(hinder);

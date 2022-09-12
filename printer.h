@@ -6,6 +6,7 @@
 #define C__LEARN_PRINTER_H
 
 #include <windows.h>
+#include <iomanip>
 #include "Biology.h"
 
 void setColor(int a) {
@@ -42,6 +43,10 @@ void printBiologyData(const Biology &biology) {
     setColor(7);
     cout << endl;
     // ÎïÆ·À¸
+    for (int i = 0; i < biology.item.size(); i++) {
+        cout << setw(2) << i;
+    }
+    cout << endl;
     for (GameObject o: biology.item) {
         setColor(o);
         cout << objectToStr[o];
