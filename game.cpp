@@ -12,7 +12,7 @@
 #include "Vec.h"
 #include "object.h"
 #include "Biology.h"
-
+#include "worldGenerator.h"
 
 using namespace std;
 int seed = 15535;
@@ -94,40 +94,18 @@ public:
     World(int w, int h) {
         this->height = h;
         this->width = w;
-        // 开始生成地形
-        for (int y = 0; y < this->height; y++) {
-            vector<GameObject> v;
-            for (int x = 0; x < this->width; x++) {
 
-                int r = (int) E() % 1000;  // 1~1000
-                if (r < 10) {
-                    v.push_back(stone);
-                } else if (r < 100) {
-                    v.push_back(wood);
-                } else if (r < 120) {
-                    // 生成水池
-                    v.push_back(water);
-                } else {
-                    v.push_back(air);
-                }
-            }
-            this->content.push_back(v);
-        }
-        // 开始生长树叶
         for (int y = 0; y < this->height; y++) {
+            vector<GameObject> line;
             for (int x = 0; x < this->width; x++) {
-                if (this->getBlock(x, y) == wood) {
-                    int r = (int) E() % 3 + 1;
-                    for (int dy = -r; dy <= r; dy++) {
-                        for (int dx = -r; dx <= r; dx++) {
-                            if (this->getBlock(x + dx, y + dy) == air) {
-                                this->setBlock(leave, x + dx, y + dy);
-                            }
-                        }
-                    }
-                }
+                line.push_back(air);
             }
+            this->content.push_back(line);
         }
+
+        WorldGenerator::mountain(this->content);
+        WorldGenerator::planTree(this->content);
+        WorldGenerator::pool(this->content);
     }
 
     /**
@@ -399,7 +377,9 @@ public:
 
 
 int main() {
+    cout << "正在开始游戏" << endl;
     World g(100, 100);
+    g.show1();
     g.play();
     // g.testPlay();
     // for (int i = 0; i < 10; i++) {
