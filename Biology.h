@@ -10,6 +10,8 @@
 #include "ProgressBar.h"
 #include "object.h"
 
+#include <windows.h>
+
 enum BiologyState {
     normal = 12,
     inWater = 28,
@@ -33,12 +35,18 @@ public:
     BiologyState state = normal;
     // 物品栏
     vector<GameObject> item = {air, air, air, air, air, air, air, air, air, air};
+    int itemIndex = 0;  // 当前选定的是哪个
     // 可合成的物品列表
     vector<GameObject> availableList{};
+    int availableIndex = 0;
 
-    int itemIndex = 0;  // 当前选定的是哪个
     unordered_map<GameObject, int> pack;
 
+    /**
+     * 生物构造方法
+     * @param loc 位置
+     * @param hp 初始化血量
+     */
     Biology(Vec loc, double hp) {
         this->loc = loc;
         this->speed = {1, 0};
@@ -66,6 +74,7 @@ public:
             }
         }
         this->pack[obj]++;
+
     }
 
     /**
@@ -127,8 +136,89 @@ public:
         return this->item[this->itemIndex];
     }
 
+    /**
+     * 更新可合成物品列表
+     */
+    void updateAvailableList() {
+        this->availableList.clear();
+        // 遍历配方表里的每一个物品
+        for (auto [newObj, recipeMap]: RecipeTable) {
+            bool available = true;
+            // 遍历合成这个物品的所有配方
+
+            for (auto [needObj, count]: recipeMap) {
+                if (this->pack[needObj] >= count) {
+                    continue;
+                } else {
+                    available = false;
+                    // cout << "缺少" << objectToStr[needObj] << count - this->pack[needObj] << "个" << endl;
+                    break;
+                }
+            }
+            if (available) {
+                this->availableList.push_back(newObj);
+            } else {
+                // cout << "导致";
+                // SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), newObj);
+                // cout << objectToStr[newObj];
+                // SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+                // cout << "无法合成" << endl;
+            }
+        }
+    }
+
+    /**
+     * n = 1 , index = 0
+     * n = 2 , index = 1
+     * ...
+     * n = 0 , index = 9
+     * @param n 键盘上按下的是数字几？
+     */
     void setItemIndex(int n) {
-        this->itemIndex = n;
+        if (n == 0) {
+            this->itemIndex = 9;
+        } else {
+            this->itemIndex = n - 1;
+        }
+    }
+
+    void availableItemPlus() {
+        if (!this->availableList.empty()) {
+            // --->
+            this->availableIndex++;
+            if (this->availableIndex == this->availableList.size()) {
+                availableIndex = 0;
+            }
+        }
+    }
+
+    void availableItemReduce() {
+        if (!this->availableList.empty()) {
+            // <===
+            this->availableIndex--;
+            if (this->availableIndex == -1) {
+                availableIndex = (int) this->availableList.size() - 1;
+            }
+        }
+    }
+
+    /**
+     * 玩家合成物品
+     * 默认确保指针指到了正确的物品上
+     */
+    void getComposeObject() {
+        if (this->availableList.empty()) {
+            return;
+        }
+        GameObject gainObj = this->availableList[this->availableIndex];
+        for (int i = 0; i < GainCount[gainObj]; i++) {
+            this->getObject(gainObj);
+        }
+        for (auto [useObj, count]: RecipeTable[gainObj]) {
+            for (int i = 0; i < count; i++) {
+                this->loseObject(useObj);
+            }
+        }
     }
 
     void itemIndexPlus() {
@@ -144,6 +234,7 @@ public:
             this->itemIndex = (int) this->item.size() - 1;
         }
     }
+
 
     /**
      * 玩家吃物品

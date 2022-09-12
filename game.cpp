@@ -223,6 +223,7 @@ public:
      */
     void tick() {
         // 玩家状态更新
+        this->player.updateAvailableList();
         // 气的关系
         if (this->getBlock(this->player.loc) == water) {
             this->player.breath.change(-1);
@@ -306,7 +307,18 @@ public:
             if (48 <= key && key <= 57) {
                 // 数字 切换物品栏指针
                 this->player.setItemIndex(key - 48);
-
+            }
+            if (key == 97) {
+                // a 切换合成物 左侧
+                this->player.availableItemReduce();
+            }
+            if (key == 100) {
+                // d 切换合成物 右侧
+                this->player.availableItemPlus();
+            }
+            if (key == 99) {
+                // c 合成物品
+                this->player.getComposeObject();
             }
             if (key == 224) {
                 continue;

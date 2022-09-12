@@ -19,19 +19,21 @@ enum GameObject {
     dirt = 102,
     wood = 6,
     apple = 13,
-    sapling = 266, // 树苗
-    board = 262,
-    stick = 518,
+    sapling = 10 + 256, // 树苗
+    board = 6 + 256,
+    stick = 6 + 256 * 2,
     workbench = 96, // 工作台
-    woodDraft = 774, // 木稿子
-    stoneDraft = 7 + 256,
-    ironDraft = 7 + 256 * 2,
-    diamondDraft = 7 + 256 * 3,
+    // 稿子
+    woodDraft = 6 + 256 * 3,
+    stoneDraft = 8 + 256,
+    ironDraft = 7 + 256,
+    diamondDraft = 11,
+
     ironBlock = 135,
     coalBlock = 128,
     goldBlock = 142,
     diamondBlock = 139,
-    brokenStone = 391,
+    brokenStone = 135 + 256,
 };
 
 unordered_map<GameObject, string> objectToStr{
@@ -48,7 +50,7 @@ unordered_map<GameObject, string> objectToStr{
         {apple,        "果"},
         {board,        "板"},
         {stick,        "棍"},
-        {workbench,    "╤╤"},
+        {workbench,    "TT"},
         {ironBlock,    "^v"},
         {coalBlock,    "%%"},
         {goldBlock,    "*."},
@@ -58,24 +60,28 @@ unordered_map<GameObject, string> objectToStr{
         {ironDraft,    "稿"},
         {diamondDraft, "稿"},
 };
-
-// 是否可穿过
-bool isBlockCanThrough(GameObject o) {
-    if (o == air || o == water || o == grass || o == sapling || o == apple || o == leave) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-// 是否可以拾起
-bool isBlockCanPickUp(GameObject o) {
-    if (o == sapling || o == apple) {
-        return true;
-    }
-    return false;
-}
-
+// 假设每种物品的合成途径是唯一的
+unordered_map<GameObject, unordered_map<GameObject, int>> RecipeTable{
+        {board,        {{wood,         1},}},
+        {stick,        {{board,        2},}},
+        {workbench,    {{board,        4},}},
+        {woodDraft,    {{board,        3}, {stick, 2},}},
+        {stoneDraft,   {{stone,        3}, {stick, 2},}},
+        {ironDraft,    {{ironBlock,    3}, {stick, 2},}},
+        {diamondDraft, {{diamondBlock, 3}, {stick, 2},}},
+};
+/**
+ * 可以通过合成获得的数量
+ */
+unordered_map<GameObject, int> GainCount{
+        {board,        4},
+        {stick,        4},
+        {workbench,    1},
+        {woodDraft,    1},
+        {stoneDraft,   1},
+        {ironDraft,    1},
+        {diamondDraft, 1},
+};
 /**
  * 方块硬度表
  * 方块硬度  挖爆他的概率
@@ -110,11 +116,29 @@ unordered_map<GameObject, int> BlockDigCondition{
  *
  */
 unordered_map<GameObject, int> ToolDigLevel{
-        {woodDraft, 1},
-        {stoneDraft, 2},
-        {ironDraft, 3},
+        {woodDraft,    1},
+        {stoneDraft,   2},
+        {ironDraft,    3},
         {diamondDraft, 4},
 };
+
+// 是否可穿过
+bool isBlockCanThrough(GameObject o) {
+    if (o == air || o == water || o == grass || o == sapling || o == apple || o == leave) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+// 是否可以拾起
+bool isBlockCanPickUp(GameObject o) {
+    if (o == sapling || o == apple) {
+        return true;
+    }
+    return false;
+}
+
 
 // 左键效果
 bool isBlockCanDig(GameObject o) {
@@ -147,30 +171,6 @@ bool isEatable(GameObject o) {
     }
     return false;
 }
-
-namespace Recipe {
-    unordered_map<GameObject, int> boardRecipe{
-            make_pair(wood, 1),
-    };
-    unordered_map<GameObject, int> workbenchRecipe{
-            make_pair(board, 4),
-    };
-    unordered_map<GameObject, int> stickRecipe{
-            make_pair(board, 2),
-    };
-    unordered_map<GameObject, int> woodDraftRecipe{
-            make_pair(board, 3),
-            make_pair(stick, 2),
-    };
-
-}
-using namespace Recipe;
-unordered_map<GameObject, pair<unordered_map<GameObject, int>, int>> RecipeTable{
-        make_pair(board, make_pair(boardRecipe, 4)),
-        make_pair(workbench, make_pair(workbenchRecipe, 1)),
-        make_pair(stick, make_pair(stickRecipe, 4)),
-        make_pair(woodDraft, make_pair(woodDraftRecipe, 1)),
-};
 
 
 #endif //C__LEARN_OBJECT_H

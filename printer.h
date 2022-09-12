@@ -43,10 +43,7 @@ void printBiologyData(const Biology &biology) {
     setColor(7);
     cout << endl;
     // 物品栏
-    for (int i = 0; i < biology.item.size(); i++) {
-        cout << setw(2) << i;
-    }
-    cout << endl;
+    cout << "1 2 3 4 5 6 7 8 9 0 " << endl;
     for (GameObject o: biology.item) {
         setColor(o);
         cout << objectToStr[o];
@@ -67,6 +64,25 @@ void printBiologyData(const Biology &biology) {
         cout << ":" << v << ", ";
     }
     cout << "}" << endl;
+
+    // 手动合成台
+    if (!biology.availableList.empty()) {
+        cout << "可合成：" << endl;
+        for (GameObject newObj: biology.availableList) {
+            setColor(newObj);
+            cout << objectToStr[newObj];
+        }
+        setColor(7);
+        cout << endl;
+        for (int i = 0; i < biology.availableIndex; i++) {
+            cout << "  ";
+        }
+        cout << "↑" << endl;
+    } else {
+        cout << "当前没有可以合成的物品" << endl;
+    }
+
+
 }
 
 #endif //C__LEARN_PRINTER_H
