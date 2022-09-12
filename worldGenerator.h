@@ -172,13 +172,13 @@ private:
 public:
     /// 生成山
     static void mountain(vector<vector<GameObject>> &world) {
-        NoiseSet2D m(1.1);  // hash code from string todo
+        NoiseSet2D m(23154.5252);  // hash code from string todo
         m.addNoise(50, 20);
         m.addNoise(5, 25);
         m.addNoise(5, 5);
         for (int y = 0; y < world.size(); y++) {
             for (int x = 0; x < world[y].size(); x++) {
-                if (m.getHeight(x, y) > 30) {
+                if (m.getHeight(x, y) > 10) {
                     world[y][x] = stone;
                 }
             }

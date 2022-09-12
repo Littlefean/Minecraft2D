@@ -12,7 +12,7 @@ using namespace std;
 enum GameObject {
     barrier = 0,
     air = 7,
-    stone = 112,
+    stone = 143,
     water = 17,
     grass = 10,
     leave = 2,
@@ -29,7 +29,7 @@ enum GameObject {
 unordered_map<GameObject, string> objectToStr{
         make_pair(barrier, "X "),
         make_pair(air, "  "),
-        make_pair(stone, "  "),
+        make_pair(stone, "`."),
         make_pair(water, "Ë®"),
         make_pair(grass, "²Ý"),
         make_pair(leave, "Ò¶"),

@@ -106,6 +106,9 @@ public:
         WorldGenerator::mountain(this->content);
         WorldGenerator::planTree(this->content);
         WorldGenerator::pool(this->content);
+        // Ñ°ÕÒ³öÉúµã
+        this->player.loc.x = this->width / 2;
+        this->player.loc.y = this->height / 2;
     }
 
     /**
