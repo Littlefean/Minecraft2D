@@ -13,6 +13,8 @@
 #include <sstream>
 #include <random>
 #include <algorithm>
+#include "myRandom.h"
+
 
 #include "Vec.h"
 #include "object.h"
@@ -172,7 +174,7 @@ private:
 public:
     /// 生成山
     static void mountain(vector<vector<GameObject>> &world) {
-        NoiseSet2D m(23154.5252);  // hash code from string todo
+        NoiseSet2D m(uniform01());  // hash code from string todo
         m.addNoise(50, 20);
         m.addNoise(5, 25);
         m.addNoise(5, 5);
@@ -187,20 +189,20 @@ public:
 
     /// 生成矿石
     static void genOre(vector<vector<GameObject>> &world) {
-        // 铁矿
-        NoiseSet2D ironNoise(3154.52);
+        // 铁矿  // todo
+        NoiseSet2D ironNoise(uniform01());
         ironNoise.addNoise(5, 20);
         ironNoise.addNoise(5, 25);
         ironNoise.addNoise(5, 5);
-        NoiseSet2D coalNoise(12.52);
+        NoiseSet2D coalNoise(uniform01());
         coalNoise.addNoise(5, 20);
         coalNoise.addNoise(5, 25);
         coalNoise.addNoise(5, 5);
-        NoiseSet2D goldNoise(12.52);
+        NoiseSet2D goldNoise(uniform01());
         goldNoise.addNoise(5, 10);
         goldNoise.addNoise(2, 10);
         goldNoise.addNoise(3, 10);
-        NoiseSet2D diamondsNoise(12.52);
+        NoiseSet2D diamondsNoise(uniform01());
         diamondsNoise.addNoise(5, 10);
         diamondsNoise.addNoise(2, 10);
         diamondsNoise.addNoise(3, 10);
