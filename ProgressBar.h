@@ -7,7 +7,10 @@
 
 using namespace std;
 
-// 进度条类
+/**
+ * 进度条类
+ * 用于血条，饱食度条等等
+ */
 class ProgressBar {
 public:
     double maxValue;
@@ -18,6 +21,11 @@ public:
         this->value = v;
     }
 
+    /**
+     * 进度条更改值操作
+     * 能够防止加爆了，减成负数了等情况
+     * @param d
+     */
     void change(double d) {
         this->value += d;
         if (this->value > this->maxValue) {
@@ -28,10 +36,18 @@ public:
         }
     }
 
+    /**
+     * 直接让进度条里的值顶满
+     * 用于：血条补满
+     */
     void setMax() {
         this->value = this->maxValue;
     }
 
+    /**
+     * 当前条是不是满了的状态
+     * @return
+     */
     bool isMax() {
         return this->value >= this->maxValue;
     }

@@ -11,7 +11,10 @@
 #include "Vec.h"
 #include "ProgressBar.h"
 
-
+/**
+ * 动物类
+ * 一般不会攻击的动物
+ */
 class Animal {
 private:
     // int damage = 2;
@@ -31,10 +34,8 @@ public:
     }
 
     void go() {
-        // cout << "动物位置：" << this->loc << "speed:" << this->speed << endl;
         this->loc.x += this->speed.x;
         this->loc.y += this->speed.y;
-        // cout << "动物位置：" << this->loc << "speed:" << this->speed << endl;
     }
 
     /**

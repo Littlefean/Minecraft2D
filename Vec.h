@@ -10,7 +10,9 @@
 
 using namespace std;
 
-
+/**
+ * 二维适量类
+ */
 class Vec {
 
 public:
@@ -57,7 +59,10 @@ public:
         return os << "(" << p.x << "," << p.y << ")";
     };
 
-
+    /**
+     * 获取一个坐标点的上下左右四个位置
+     * @return
+     */
     vector<Vec> getRoundLoc() {
         vector<Vec> res;
         res.emplace_back(this->x + 1, this->y);

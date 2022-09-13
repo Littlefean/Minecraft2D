@@ -1,11 +1,11 @@
 //
+// 世界生成器
 // Created by 20281 on 2022/9/12.
 //
 
 #ifndef C__LEARN_WORLDGENERATOR_H
 #define C__LEARN_WORLDGENERATOR_H
 
-// 世界生成器
 
 #include <cmath>
 #include <vector>
@@ -21,6 +21,11 @@
 
 using namespace std;
 
+/**
+ * 平滑函数，仅限此文件内部使用
+ * @param xi
+ * @return
+ */
 double smoothFunc(double xi) {
     return 3 * pow(xi, 2) - 2 * pow(xi, 3);
 }
@@ -166,6 +171,10 @@ public:
     }
 };
 
+/**
+ * 世界生成器类
+ * 这个类里面的方法相当于一些涂鸦方法，给二维vector涂鸦东西
+ */
 class WorldGenerator {
     // 平滑函数
 private:
@@ -228,7 +237,6 @@ public:
 
     /// 生成小水坑
     static void pool(vector<vector<GameObject>> &world) {
-
         for (auto &y: world) {
             for (auto &x: y) {
                 if (x == air && percentage(5)) {
@@ -257,7 +265,6 @@ public:
             }
         }
     }
-
 };
 
 #endif //C__LEARN_WORLDGENERATOR_H

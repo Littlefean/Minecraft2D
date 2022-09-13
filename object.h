@@ -9,6 +9,12 @@
 
 using namespace std;
 
+/**
+ * 物品枚举
+ * 枚举的值是终端打印的颜色值
+ * 0~256 一个大循环
+ * 枚举值中不能有重复编号，所以重复的颜色要标+256
+ */
 enum GameObject {
     barrier = 0,
     air = 7,
@@ -39,7 +45,10 @@ enum GameObject {
     diamondBlock = 139,
     brokenStone = 135 + 256,
 };
-
+/**
+ * 物品对应打印在控制台上的字符
+ *
+ */
 unordered_map<GameObject, string> objectToStr{
         {barrier,      "X "},
         {brokenStone,  "╳╳"},
@@ -129,7 +138,11 @@ unordered_map<GameObject, int> ToolDigLevel{
         {diamondDraft, 4},
 };
 
-// 是否可穿过
+/**
+ * 这个方块是否是可以被玩家、生物走路穿过的
+ * @param o
+ * @return
+ */
 bool isBlockCanThrough(GameObject o) {
     if (o == air || o == water || o == grass || o == sapling || o == apple || o == leave) {
         return true;
@@ -138,7 +151,11 @@ bool isBlockCanThrough(GameObject o) {
     }
 }
 
-// 是否可以拾起
+/**
+ * 物品是否是可以捡起来的
+ * @param o
+ * @return
+ */
 bool isBlockCanPickUp(GameObject o) {
     if (o == sapling || o == apple) {
         return true;
@@ -147,12 +164,21 @@ bool isBlockCanPickUp(GameObject o) {
 }
 
 
-// 左键效果
+/**
+ * 一个物品是否是可以挖掘的
+ * 在硬度表里的物品都是可以挖掘的
+ * @param o 物品
+ * @return 是否
+ */
 bool isBlockCanDig(GameObject o) {
     return BlockHardnessTable.find(o) != BlockHardnessTable.end();
 }
 
-// 右键效果
+/**
+ * 该物品拿在手上的时候是否可以放置出去
+ * @param o 物品
+ * @return 是否
+ */
 bool isBlockPut(GameObject o) {
     if (o == wood || o == dirt || o == sapling || o == stone) {
         return true;
@@ -160,7 +186,12 @@ bool isBlockPut(GameObject o) {
     return false;
 }
 
-// 这个方块是否可以被放置覆盖
+/**
+ * 这个方块是否可以被放置覆盖，空气方块上可以放置东西
+ * 计划草方块上也可以放置东西，直接把草方块给覆盖了
+ * @param o 方块
+ * @return 是否
+ */
 bool isBlockBeCover(GameObject o) {
     if (o == air) {
         return true;
@@ -168,10 +199,18 @@ bool isBlockBeCover(GameObject o) {
     return false;
 }
 
+/**
+ * 食物饱食度表
+ */
 unordered_map<GameObject, int> foodTastiness{
-        make_pair(apple, 3),
+        {apple, 3},
 };
 
+/**
+ * 一个物品是否能够被玩家吃
+ * @param o
+ * @return
+ */
 bool isEatable(GameObject o) {
     if (foodTastiness.contains(o)) {
         return true;

@@ -9,6 +9,10 @@
 #include <iomanip>
 #include "Player.h"
 
+/**
+ * 设置控制台打印的颜色
+ * @param a 颜色值
+ */
 void setColor(int a) {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), a);
 }

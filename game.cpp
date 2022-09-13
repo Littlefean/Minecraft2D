@@ -240,12 +240,12 @@ public:
     }
 
     /**
-     * 判断一个草是不是没有连接着根部
+     * 判断一个叶子是不是没有连接着根部
      * 快死了
      */
     bool isLeaveLossRoot(Vec location) {
         if (this->getBlock(location.x, location.y) == leave) {
-            // 如果当前位置是一个草，bfs周围5距离内是否有树木或草地，如果没有则死亡
+            // 如果当前位置是一个叶子，bfs周围5距离内是否有树木或叶子，如果没有则死亡
             queue<pair<Vec, int>> q;
             set<Vec> vecSet{Vec(location.x, location.y)};
             q.push({Vec(location.x, location.y), 0});
@@ -359,6 +359,10 @@ public:
         }
     }
 
+    /**
+     * 开始游戏
+     * 进入按键监听，循环状态
+     */
     void play() {
         while (true) {
             int key = getch();
