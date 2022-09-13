@@ -5,33 +5,60 @@
 #ifndef C__LEARN_ANIMAL_H
 #define C__LEARN_ANIMAL_H
 
+#include "myRandom.h"
+
 #include "object.h"
 #include "Vec.h"
 #include "ProgressBar.h"
 
+
 class Animal {
 private:
-    int damage = 2;
+    // int damage = 2;
+
 public:
     GameObject showChar;
     Vec loc{0, 0};
-    Vec targetLoc{};
+    Vec speed{0, 1};
     ProgressBar hp{10, 10};
     unordered_map<GameObject, int> deadObjects;
-    // vector<vector<GameObject>> &viewWorld; // è§†é‡ä¸–ç•Œ
 
     /**
-     * ä¸€ä¸ªæ—¶é—´åˆ»çš„è¡Œä¸º
+     * ÉèÖÃËÀÍöµôÂäÎï
+     */
+    void setDeadObj(GameObject o, int count) {
+        deadObjects[o] = count;
+    }
+
+    /**
+     * Ò»¸öÊ±¼ä¿ÌµÄĞĞÎª
      */
     void tickAction() {
-        // ä¸Šä¸‹å·¦å³ç§»åŠ¨
+        // ÉÏÏÂ×óÓÒÒÆ¶¯£¬ÔÚ´Ëº¯ÊıÖĞÖ»ÊÇ¸ü¸ÄÒÆ¶¯µÄ¶¯»ú
+        cout << "¶¯ÎïÎ»ÖÃ£º" << this->loc << endl;
+        int r = randint(4);
+        switch (r) {
+            case 0:
+                this->speed = Vec{0, 1};
+                break;
+            case 1:
+                this->speed = Vec{0, -1};
+                break;
+            case 2:
+                this->speed = Vec{1, 0};
+                break;
 
+            case 3:
+                this->speed = Vec{-1, 0};
+                break;
+            default:
+                this->speed = Vec{0, 1};
+        }
     }
 
     Animal(GameObject o, Vec loc) {
         this->showChar = o;
         this->loc = loc;
-        this->targetLoc = loc;
     }
 
 };

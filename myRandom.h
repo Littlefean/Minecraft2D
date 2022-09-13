@@ -13,12 +13,17 @@ int myRandomSeed = (int) time(nullptr);
 default_random_engine _E(myRandomSeed);
 uniform_real_distribution<double> _U(0, 1);
 
+/**
+ * Éú³É [0, n) ·¶Î§µÄËæ»úÕûÊı
+ * @param n
+ * @return
+ */
 int randint(int n) {
     return ((int) _E() % 2147483647) % n;
 }
 
 /**
- * ç™¾åˆ†ä¹‹å¤šå°‘çš„äº‹æƒ…å‘ç”Ÿä¸€ä»¶äº‹
+ * °Ù·ÖÖ®¶àÉÙµÄÊÂÇé·¢ÉúÒ»¼şÊÂ
  * @param n
  * @return
  */
@@ -31,7 +36,7 @@ bool percentage(int n) {
 }
 
 /**
- * è¿”å›0~1ä¹‹é—´çš„éšæœºå°æ•°
+ * ·µ»Ø0~1Ö®¼äµÄËæ»úĞ¡Êı
  * @return
  */
 double uniform01() {

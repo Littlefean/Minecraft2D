@@ -53,6 +53,10 @@ public:
         return v.x == this->x && v.y == this->y;
     }
 
+    friend ostream &operator<<(ostream &os, const Vec &p) {
+        return os << "(" << p.x << "," << p.y << ")";
+    };
+
     vector<Vec> getRoundLoc() {
         vector<Vec> res;
         res.emplace_back(this->x + 1, this->y);

@@ -56,6 +56,14 @@ private:
         }
     }
 
+    void animalMove(Animal a) {
+        GameObject hinder = this->getBlock(a.loc.x + a.speed.x, a.loc.y + a.speed.y);
+        if (isBlockCanThrough(hinder)) {
+            a.loc.x += a.speed.x;
+            a.loc.y += a.speed.y;
+        }
+    }
+
     /// 玩家移动
     void userMove(int dx, int dy) {
         GameObject hinder = this->getBlock(this->player.loc.x + dx, this->player.loc.y + dy);
@@ -166,8 +174,8 @@ public:
     void show1() {
         for (int dy = -this->renderRadius; dy <= this->renderRadius; dy++) {
             for (int dx = -this->renderRadius; dx <= this->renderRadius; dx++) {
-                int x = this->player.loc.x + dx;
-                int y = this->player.loc.y + dy;
+                const int x = this->player.loc.x + dx;
+                const int y = this->player.loc.y + dy;
 
                 if (x == this->player.loc.x && y == this->player.loc.y) {
                     // 优先显示玩家
@@ -204,7 +212,7 @@ public:
                     if (objectToStr.count(thing)) {
                         cout << objectToStr[thing];
                     } else {
-                        cout << '?';
+                        cout << "??";
                     }
                 }
             }
@@ -281,7 +289,11 @@ public:
             cout << "game Over!!!" << endl;
         }
         // 动物更新 todo
-
+        for (Animal a: this->animalList) {
+            a.tickAction();
+            // 移动动物
+            this->animalMove(a);
+        }
         // 植被更新
         int updateRange = this->renderRadius + 2;
         for (int y = this->player.loc.y - updateRange; y <= this->player.loc.y + updateRange; y++) {

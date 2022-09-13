@@ -5,7 +5,7 @@
 #ifndef C__LEARN_WORLDGENERATOR_H
 #define C__LEARN_WORLDGENERATOR_H
 
-// ä¸–ç•Œç”Ÿæˆå™¨
+// ÊÀ½çÉú³ÉÆ÷
 
 #include <cmath>
 #include <vector>
@@ -26,18 +26,18 @@ double smoothFunc(double xi) {
 }
 
 /**
- * äºŒç»´å™ªéŸ³ç±»
+ * ¶şÎ¬ÔëÒôÀà
  */
 class Noise2D {
-    int diff;  // é—´è·
-    double loud;  // å“åº¦
+    int diff;  // ¼ä¾à
+    double loud;  // Ïì¶È
     int seed;
 
     /**
-     * ä¼ å…¥ä¸€ä¸ªåæ ‡ï¼Œè¿”å›è¿™ä¸ªåæ ‡æ‰€åœ¨åŒºåŸŸçš„å››ä¸ªè§’è½å™ªéŸ³æºå¤´ä½ç½®
-     * @param x åæ ‡
-     * @param y åæ ‡
-     * @return å››ä¸ªæºå¤´ä½ç½®ç»„æˆçš„vector
+     * ´«ÈëÒ»¸ö×ø±ê£¬·µ»ØÕâ¸ö×ø±êËùÔÚÇøÓòµÄËÄ¸ö½ÇÂäÔëÒôÔ´Í·Î»ÖÃ
+     * @param x ×ø±ê
+     * @param y ×ø±ê
+     * @return ËÄ¸öÔ´Í·Î»ÖÃ×é³ÉµÄvector
      */
     [[nodiscard]] vector<Vec> getNoisePosition(int x, int y) const {
         int xMin, xMax, yMin, yMax;
@@ -56,7 +56,7 @@ class Noise2D {
             yMax = yMin + this->diff;
         }
         vector<Vec> res{};
-        // å·¦ä¸Š å³ä¸Š å·¦ä¸‹ å³ä¸‹
+        // ×óÉÏ ÓÒÉÏ ×óÏÂ ÓÒÏÂ
         res.emplace_back(xMin, yMax);
         res.emplace_back(xMax, yMax);
         res.emplace_back(xMin, yMin);
@@ -65,10 +65,10 @@ class Noise2D {
     }
 
     /**
-     * è·å–ä¸€ä¸ªæºå¤´çš„å™ªéŸ³å€¼
-     * @param x åæ ‡
-     * @param y åæ ‡
-     * @return å™ªéŸ³å€¼
+     * »ñÈ¡Ò»¸öÔ´Í·µÄÔëÒôÖµ
+     * @param x ×ø±ê
+     * @param y ×ø±ê
+     * @return ÔëÒôÖµ
      */
     double getCoreNoise(int x, int y) {
         vector<Vec> p4 = this->getNoisePosition(x, y);
@@ -87,10 +87,10 @@ class Noise2D {
 
 public:
     /**
-     * äºŒç»´å™ªéŸ³ç±»çš„æ„é€ æ–¹æ³•
-     * @param diff é—´è·
-     * @param loud å“åº¦
-     * @param seed ç§å­
+     * ¶şÎ¬ÔëÒôÀàµÄ¹¹Ôì·½·¨
+     * @param diff ¼ä¾à
+     * @param loud Ïì¶È
+     * @param seed ÖÖ×Ó
      */
     Noise2D(int diff, double loud, int seed) {  // todo seed type
         this->diff = diff;
@@ -99,9 +99,9 @@ public:
     }
 
     /**
-     * è·å–æŸä¸ªä½ç½®ä¸Šçš„buff
-     * @param x åæ ‡
-     * @param y åæ ‡
+     * »ñÈ¡Ä³¸öÎ»ÖÃÉÏµÄbuff
+     * @param x ×ø±ê
+     * @param y ×ø±ê
      * @return buff
      */
     double getBuff(int x, int y) {
@@ -130,17 +130,17 @@ public:
 };
 
 /**
- * äºŒç»´å™ªéŸ³é›†ç±»
+ * ¶şÎ¬ÔëÒô¼¯Àà
  */
 class NoiseSet2D {
 
 public:
     double seed;
-    // è¿™ä¸ªäºŒç»´å™ªéŸ³é›†çš„æ‰€æœ‰å•å±‚äºŒç»´å™ªéŸ³
+    // Õâ¸ö¶şÎ¬ÔëÒô¼¯µÄËùÓĞµ¥²ã¶şÎ¬ÔëÒô
     vector<Noise2D> noise2DS = {};
 
     /**
-     * äºŒç»´å™ªéŸ³é›†ç±»çš„æ„é€ æ–¹æ³•
+     * ¶şÎ¬ÔëÒô¼¯ÀàµÄ¹¹Ôì·½·¨
      * @param seed
      */
     explicit NoiseSet2D(double seed) {
@@ -148,15 +148,15 @@ public:
     }
 
     /**
-     * æ·»åŠ ä¸€ä¸ªå™ªéŸ³
-     * @param diff é—´è·
-     * @param loud å“åº¦
+     * Ìí¼ÓÒ»¸öÔëÒô
+     * @param diff ¼ä¾à
+     * @param loud Ïì¶È
      */
     void addNoise(int diff, double loud) {
         this->noise2DS.emplace_back(diff, loud, (int) (this->seed) + this->noise2DS.size() * 50);
     }
 
-    // è·å–è¯¥å™ªå£°å¤„æŸä¸€ä¸ªä½ç½®çš„é«˜åº¦
+    // »ñÈ¡¸ÃÔëÉù´¦Ä³Ò»¸öÎ»ÖÃµÄ¸ß¶È
     double getHeight(int x, int y) {
         double res = 0;
         for (Noise2D noise2D: this->noise2DS) {
@@ -167,12 +167,12 @@ public:
 };
 
 class WorldGenerator {
-    // å¹³æ»‘å‡½æ•°
+    // Æ½»¬º¯Êı
 private:
 
 
 public:
-    /// ç”Ÿæˆå±±
+    /// Éú³ÉÉ½
     static void mountain(vector<vector<GameObject>> &world) {
         NoiseSet2D m(uniform01());  // hash code from string todo
         m.addNoise(50, 20);
@@ -187,9 +187,9 @@ public:
         }
     }
 
-    /// ç”ŸæˆçŸ¿çŸ³
+    /// Éú³É¿óÊ¯
     static void genOre(vector<vector<GameObject>> &world) {
-        // é“çŸ¿  // todo
+        // Ìú¿ó  // todo
         NoiseSet2D ironNoise(uniform01());
         ironNoise.addNoise(5, 20);
         ironNoise.addNoise(5, 25);
@@ -226,7 +226,7 @@ public:
         }
     }
 
-    /// ç”Ÿæˆå°æ°´å‘
+    /// Éú³ÉĞ¡Ë®¿Ó
     static void pool(vector<vector<GameObject>> &world) {
 
         for (auto &y: world) {
@@ -238,13 +238,13 @@ public:
         }
     }
 
-    /// ç”Ÿé•¿æ ‘æœ¨
+    /// Éú³¤Ê÷Ä¾
     static void planTree(vector<vector<GameObject>> &world) {
         for (int y = 0; y < world.size(); y++) {
             for (int x = 0; x < world[y].size(); x++) {
                 if (world[y][x] == air && percentage(5)) {
                     world[y][x] = wood;
-                    // åŒæ—¶ç”Ÿé•¿æ ‘å¶
+                    // Í¬Ê±Éú³¤Ê÷Ò¶
                     int r = randint(3) + 1;  // 123
                     for (int leaveY = max(0, y - r); leaveY <= min((int) world.size() - 1, y + r); leaveY++) {
                         for (int leaveX = max(0, x - r); leaveX <= min((int) world[y].size() - 1, x + r); leaveX++) {
