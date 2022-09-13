@@ -57,6 +57,7 @@ public:
         return os << "(" << p.x << "," << p.y << ")";
     };
 
+
     vector<Vec> getRoundLoc() {
         vector<Vec> res;
         res.emplace_back(this->x + 1, this->y);

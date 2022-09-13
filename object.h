@@ -31,7 +31,7 @@ enum GameObject {
 
     // 生物
     skeleton = 8 + 256,
-    cow = 6 + 256 * 4,
+    sheep = 6 + 256 * 4,
 
     ironBlock = 135,
     coalBlock = 128,
@@ -64,7 +64,7 @@ unordered_map<GameObject, string> objectToStr{
         {ironDraft,    "稿"},
         {diamondDraft, "稿"},
 
-        {cow,          "牛"},
+        {sheep,        "羊"},
         {skeleton,     "骷"},
 };
 // 假设每种物品的合成途径是唯一的

@@ -30,12 +30,19 @@ public:
         deadObjects[o] = count;
     }
 
+    void go() {
+        // cout << "动物位置：" << this->loc << "speed:" << this->speed << endl;
+        this->loc.x += this->speed.x;
+        this->loc.y += this->speed.y;
+        // cout << "动物位置：" << this->loc << "speed:" << this->speed << endl;
+    }
+
     /**
      * 一个时间刻的行为
      */
     void tickAction() {
         // 上下左右移动，在此函数中只是更改移动的动机
-        cout << "动物位置：" << this->loc << endl;
+
         int r = randint(4);
         switch (r) {
             case 0:
@@ -54,6 +61,9 @@ public:
             default:
                 this->speed = Vec{0, 1};
         }
+        // this->loc.x += this->speed.x;
+        // this->loc.y += this->speed.y;
+
     }
 
     Animal(GameObject o, Vec loc) {

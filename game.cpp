@@ -5,6 +5,7 @@
 #include <set>
 #include <queue>
 #include <array>
+#include <list>
 
 #include "printer.h"  // 这个必须在第一个
 
@@ -25,7 +26,7 @@ private:
     int width;
     int renderRadius = 5;  // 渲染半径
     Player player{{0, 0}, 10};
-    vector<Animal> animalList{};  // 动物列表
+    list<Animal> animalList{};  // 动物列表
 
     void setBlock(GameObject n, int x, int y) {
         if ((0 <= x && x < this->width) && (0 <= y && y < this->height)) {
@@ -56,11 +57,14 @@ private:
         }
     }
 
-    void animalMove(Animal a) {
+    void animalMove(Animal &a) {
         GameObject hinder = this->getBlock(a.loc.x + a.speed.x, a.loc.y + a.speed.y);
         if (isBlockCanThrough(hinder)) {
-            a.loc.x += a.speed.x;
-            a.loc.y += a.speed.y;
+            // cout << "动物位置：" << a.loc << "speed:" << a.speed << endl;
+            a.go();
+            // cout << "动物位置：" << a.loc << "speed:" << a.speed << endl;
+        } else {
+            // cout << objectToStr[hinder] << "阻碍了牛牛" << endl;
         }
     }
 
@@ -119,7 +123,7 @@ public:
         for (int i = 0; i < 5; i++) {
             Vec randLoc = Vec::randomVec(this->width, this->height);
             if (this->getBlock(randLoc) == air) {
-                this->animalList.emplace_back(cow, randLoc);
+                this->animalList.insert(this->animalList.end(), Animal(sheep, randLoc));
             } else {
                 i--;
             }
@@ -174,10 +178,11 @@ public:
     void show1() {
         for (int dy = -this->renderRadius; dy <= this->renderRadius; dy++) {
             for (int dx = -this->renderRadius; dx <= this->renderRadius; dx++) {
+                // x, y 分别是现在需要打印的位置
                 const int x = this->player.loc.x + dx;
                 const int y = this->player.loc.y + dy;
 
-                if (x == this->player.loc.x && y == this->player.loc.y) {
+                if (dx == 0 && dy == 0) {
                     // 优先显示玩家
                     // 根据玩家状态显示颜色
                     if (this->getBlock(this->player.loc) == water) {
@@ -198,22 +203,33 @@ public:
                     }
                 } else {
                     // 优先显示动物
+                    bool haveAnimal = false;
+                    GameObject aniObj;
+
                     for (const Animal &a: this->animalList) {
                         if (a.loc.x == x && a.loc.y == y) {
-                            GameObject aniObj = a.showChar;
-                            setColor(aniObj);
-                            cout << objectToStr[aniObj];
-                            continue;
+                            haveAnimal = true;  // todo 这里的a.loc 确实是在发生变化的
+                            aniObj = a.showChar;
+                            // cout << a.loc << endl;
+                            break;
                         }
                     }
-                    // 最后显示方块
-                    GameObject thing = this->getBlock(x, y);
-                    setColor(thing);
-                    if (objectToStr.count(thing)) {
-                        cout << objectToStr[thing];
+                    if (haveAnimal) {
+                        setColor(aniObj);
+
+                        cout << objectToStr[aniObj];
+
                     } else {
-                        cout << "??";
+                        // 最后显示方块
+                        GameObject thing = this->getBlock(x, y);
+                        setColor(thing);
+                        if (objectToStr.count(thing)) {
+                            cout << objectToStr[thing];
+                        } else {
+                            cout << "??";
+                        }
                     }
+
                 }
             }
             setColor(7); // 7 是正常的颜色
@@ -289,7 +305,7 @@ public:
             cout << "game Over!!!" << endl;
         }
         // 动物更新 todo
-        for (Animal a: this->animalList) {
+        for (Animal &a: this->animalList) {
             a.tickAction();
             // 移动动物
             this->animalMove(a);
