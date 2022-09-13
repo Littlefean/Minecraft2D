@@ -6,10 +6,13 @@
 #define C__LEARN_VEC_H
 
 #include <vector>
+#include "myRandom.h"
 
 using namespace std;
 
+
 class Vec {
+
 public:
     int x;
     int y;
@@ -22,6 +25,16 @@ public:
     Vec() {
         this->x = 0;
         this->y = 0;
+    }
+
+    /**
+     * 在 0~width-1 之内，0~height-1之内随机取一个点
+     * @param width
+     * @param height
+     * @return
+     */
+    static Vec randomVec(int width, int height) {
+        return Vec{randint(width), randint(height)};
     }
 
     bool operator<(const Vec &v) const {

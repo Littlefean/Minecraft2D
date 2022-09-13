@@ -3,21 +3,20 @@
 #include <vector>
 #include <map>
 #include <set>
-#include <random>
 #include <queue>
 #include <array>
 
-#include "printer.h"
+#include "printer.h"  // 这个必须在第一个
+
+#include "myRandom.h"
 
 #include "Vec.h"
 #include "object.h"
-#include "Biology.h"
+#include "Player.h"
 #include "worldGenerator.h"
+#include "Animal.h"
 
 using namespace std;
-int seed = 15535;
-default_random_engine E(seed);
-
 
 class World {
 private:
@@ -25,7 +24,8 @@ private:
     int height;
     int width;
     int renderRadius = 5;  // 渲染半径
-    Biology player{{0, 0}, 10};
+    Player player{{0, 0}, 10};
+    vector<Animal> animalList{};  // 动物列表
 
     void setBlock(GameObject n, int x, int y) {
         if ((0 <= x && x < this->width) && (0 <= y && y < this->height)) {
@@ -63,11 +63,11 @@ private:
             // 玩家可以移动
             // 玩家移动 受饥饿影响?
             if (this->player.hunger.value <= 3) {
-                if (E() % 2 == 0) {
+                if (percentage(50)) {
                     return;
                 }
             } else if (this->player.hunger.value <= 5) {
-                if (E() % 5 == 0) {
+                if (percentage(20)) {
                     return;
                 }
             }
@@ -107,9 +107,31 @@ public:
         WorldGenerator::genOre(this->content);
         WorldGenerator::planTree(this->content);
         WorldGenerator::pool(this->content);
+
+        for (int i = 0; i < 5; i++) {
+            Vec randLoc = Vec::randomVec(this->width, this->height);
+            if (this->getBlock(randLoc) == air) {
+                this->animalList.emplace_back(cow, randLoc);
+            } else {
+                i--;
+            }
+        }
+
         // 寻找出生点
-        this->player.loc.x = this->width / 2;
-        this->player.loc.y = this->height / 2;
+        int centerX = this->width / 2;
+        int centerY = this->height / 2;
+        // 寻找距离中心点最近的空气点
+        for (int r = 1; r < 20; r++) {
+            for (int y = centerX - r; y <= centerX + r; y++) {
+                for (int x = centerY - r; x <= centerY + r; x++) {
+                    if (this->getBlock(x, y) == air) {
+                        this->player.loc.x = x;
+                        this->player.loc.y = y;
+                        return;
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -167,6 +189,16 @@ public:
                         cout << "<=";
                     }
                 } else {
+                    // 优先显示动物
+                    for (const Animal &a: this->animalList) {
+                        if (a.loc.x == x && a.loc.y == y) {
+                            GameObject aniObj = a.showChar;
+                            setColor(aniObj);
+                            cout << objectToStr[aniObj];
+                            continue;
+                        }
+                    }
+                    // 最后显示方块
                     GameObject thing = this->getBlock(x, y);
                     setColor(thing);
                     if (objectToStr.count(thing)) {
@@ -248,6 +280,8 @@ public:
         if (this->player.hp.value == 0) {
             cout << "game Over!!!" << endl;
         }
+        // 动物更新 todo
+
         // 植被更新
         int updateRange = this->renderRadius + 2;
         for (int y = this->player.loc.y - updateRange; y <= this->player.loc.y + updateRange; y++) {
@@ -255,12 +289,12 @@ public:
                 if (this->getBlock(x, y) == leave) {
                     if (this->isLeaveLossRoot(Vec(x, y))) {
                         // 有20%的几率销毁
-                        if (E() % 5 == 0) {
+                        if (percentage(20)) {
                             this->setBlock(air, x, y);
                             // 销毁之后 可能产生树苗、果子
-                            if (E() % 4 == 0) {
+                            if (percentage(25)) {
                                 this->setBlock(apple, x, y);
-                            } else if (E() % 4 == 1) {
+                            } else if (percentage(25)) {
                                 this->setBlock(sapling, x, y);
                             }
                         }
@@ -397,7 +431,7 @@ public:
 
 int main() {
     cout << "正在开始游戏" << endl;
-    World g(100, 100);
+    World g(30, 30);
     g.show1();
     g.play();
     // g.testPlay();

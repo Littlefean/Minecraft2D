@@ -2,10 +2,9 @@
 // Created by 20281 on 2022/9/12.
 //
 
-#ifndef C__LEARN_BIOLOGY_H
-#define C__LEARN_BIOLOGY_H
+#ifndef C__LEARN_PLAYER_H
+#define C__LEARN_PLAYER_H
 
-#include <random>
 #include "Vec.h"
 #include "ProgressBar.h"
 #include "object.h"
@@ -18,10 +17,8 @@ enum BiologyState {
     burring = 78,
     dead = 71,
 };
-int biologySeed = 1535;
-default_random_engine Eo(biologySeed);
 
-class Biology {
+class Player {
 private:
 
 
@@ -47,7 +44,7 @@ public:
      * @param loc 位置
      * @param hp 初始化血量
      */
-    Biology(Vec loc, double hp) {
+    Player(Vec loc, double hp) {
         this->loc = loc;
         this->speed = {1, 0};
         this->hp = ProgressBar{hp, hp};
@@ -90,11 +87,7 @@ public:
         if (ToolDigLevel.contains(tool)) {
             digLevel = ToolDigLevel[tool];
         }
-
-        int seed = (int) time(nullptr);
-        default_random_engine e(seed);
-        uniform_real_distribution<double> u(0, 1);
-        if (u(e) <= BlockHardnessTable[obj] + digLevel * 0.1) {
+        if (uniform01() <= BlockHardnessTable[obj] + digLevel * 0.1) {
             // 挖掘成功
             if (BlockDigCondition[obj] <= digLevel) {
                 this->getObject(obj);
@@ -247,4 +240,4 @@ public:
     }
 };
 
-#endif //C__LEARN_BIOLOGY_H
+#endif //C__LEARN_PLAYER_H

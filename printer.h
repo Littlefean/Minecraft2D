@@ -7,7 +7,7 @@
 
 #include <windows.h>
 #include <iomanip>
-#include "Biology.h"
+#include "Player.h"
 
 void setColor(int a) {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), a);
@@ -17,7 +17,7 @@ void setColor(int a) {
  * 打印生物的信息
  * @param biology 通常是玩家
  */
-void printBiologyData(const Biology &biology) {
+void printBiologyData(const Player &biology) {
     // 红色血量
     setColor(4);
     cout << "血：";

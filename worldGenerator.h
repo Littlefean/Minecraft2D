@@ -226,12 +226,10 @@ public:
 
     /// 生成小水坑
     static void pool(vector<vector<GameObject>> &world) {
-        int seed = 16584;
-        default_random_engine e(seed);
 
         for (auto &y: world) {
             for (auto &x: y) {
-                if (x == air && e() % 100 < 5) {
+                if (x == air && percentage(5)) {
                     x = water;
                 }
             }
@@ -240,15 +238,12 @@ public:
 
     /// 生长树木
     static void planTree(vector<vector<GameObject>> &world) {
-        int seed = 15535;
-        default_random_engine e(seed);
         for (int y = 0; y < world.size(); y++) {
             for (int x = 0; x < world[y].size(); x++) {
-
-                if (world[y][x] == air && e() % 100 < 5) {
+                if (world[y][x] == air && percentage(5)) {
                     world[y][x] = wood;
                     // 同时生长树叶
-                    int r = (int) e() % 3 + 1;  // 123
+                    int r = randint(3) + 1;  // 123
                     for (int leaveY = max(0, y - r); leaveY <= min((int) world.size() - 1, y + r); leaveY++) {
                         for (int leaveX = max(0, x - r); leaveX <= min((int) world[y].size() - 1, x + r); leaveX++) {
                             if (world[leaveY][leaveX] == air) {

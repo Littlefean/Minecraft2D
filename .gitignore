@@ -3,3 +3,4 @@ test.cpp
 *.exe
 .idea
 CMakeLists.txt
+test.txt

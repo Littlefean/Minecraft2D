@@ -25,9 +25,13 @@ enum GameObject {
     workbench = 96, // 工作台
     // 稿子
     woodDraft = 6 + 256 * 3,
-    stoneDraft = 8 + 256,
+    stoneDraft = 8,
     ironDraft = 7 + 256,
     diamondDraft = 11,
+
+    // 生物
+    skeleton = 8 + 256,
+    cow = 6 + 256 * 4,
 
     ironBlock = 135,
     coalBlock = 128,
@@ -50,15 +54,18 @@ unordered_map<GameObject, string> objectToStr{
         {apple,        "果"},
         {board,        "板"},
         {stick,        "棍"},
-        {workbench,    "TT"},
-        {ironBlock,    "^v"},
-        {coalBlock,    "%%"},
-        {goldBlock,    "*."},
-        {diamondBlock, "<>"},
+        {workbench,    "台"},
+        {ironBlock,    "铁"},
+        {coalBlock,    "煤"},
+        {goldBlock,    "金"},
+        {diamondBlock, "钻"},
         {woodDraft,    "稿"},
         {stoneDraft,   "稿"},
         {ironDraft,    "稿"},
         {diamondDraft, "稿"},
+
+        {cow,          "牛"},
+        {skeleton,     "骷"},
 };
 // 假设每种物品的合成途径是唯一的
 unordered_map<GameObject, unordered_map<GameObject, int>> RecipeTable{
