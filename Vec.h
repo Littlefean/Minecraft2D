@@ -6,12 +6,11 @@
 #define C__LEARN_VEC_H
 
 #include <vector>
-#include "myRandom.h"
-
+#include <iostream>
 using namespace std;
 
 /**
- * 二维适量类
+ * 二维矢量类
  */
 class Vec {
 
@@ -19,15 +18,9 @@ public:
     int x;
     int y;
 
-    Vec(int x, int y) {
-        this->x = x;
-        this->y = y;
-    }
+    Vec(int x, int y);
 
-    Vec() {
-        this->x = 0;
-        this->y = 0;
-    }
+    Vec();
 
     /**
      * 在 0~width-1 之内，0~height-1之内随机取一个点
@@ -35,42 +28,21 @@ public:
      * @param height
      * @return
      */
-    static Vec randomVec(int width, int height) {
-        return Vec{randint(width), randint(height)};
-    }
+    static Vec randomVec(int width, int height);
 
-    bool operator<(const Vec &v) const {
-        if (this->x < v.x)return true;
-        if (this->x > v.x)return false;
-        if (this->y < v.y)return true;
-        return false;
-    }
+    bool operator<(const Vec &v) const;
 
-    Vec operator+(const Vec &v) const {
-        Vec res{this->x + v.x, this->y + v.y};
-        return res;
-    }
+    Vec operator+(const Vec &v) const;
 
-    bool operator==(const Vec &v) const {
-        return v.x == this->x && v.y == this->y;
-    }
+    bool operator==(const Vec &v) const;
 
-    friend ostream &operator<<(ostream &os, const Vec &p) {
-        return os << "(" << p.x << "," << p.y << ")";
-    };
+    friend ostream &operator<<(ostream &os, const Vec &p);
 
     /**
      * 获取一个坐标点的上下左右四个位置
      * @return
      */
-    vector<Vec> getRoundLoc() {
-        vector<Vec> res;
-        res.emplace_back(this->x + 1, this->y);
-        res.emplace_back(this->x - 1, this->y);
-        res.emplace_back(this->x, this->y + 1);
-        res.emplace_back(this->x, this->y - 1);
-        return res;
-    }
+    vector<Vec> getRoundLoc();
 };
 
 #endif //C__LEARN_VEC_H

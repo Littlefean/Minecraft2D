@@ -4,7 +4,7 @@
 
 #ifndef C__LEARN_PLAYER_H
 #define C__LEARN_PLAYER_H
-
+#include "myRandom.h"
 #include "Vec.h"
 #include "ProgressBar.h"
 #include "object.h"
