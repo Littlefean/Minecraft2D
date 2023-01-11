@@ -3,12 +3,9 @@
 //
 #ifndef C__LEARN_OBJECT_H
 #define C__LEARN_OBJECT_H
-
 #include <string>
 #include <unordered_map>
-
 using namespace std;
-
 /**
  * 物品枚举
  * 枚举的值是终端打印的颜色值
@@ -45,11 +42,12 @@ enum GameObject {
     diamondBlock = 139,
     brokenStone = 135 + 256,
 };
+
 /**
  * 物品对应打印在控制台上的字符
  *
  */
-unordered_map<GameObject, string> objectToStr{
+unordered_map <GameObject, string> objectToStr{
         {barrier,      "X "},
         {brokenStone,  "╳╳"},
         {air,          "  "},
@@ -77,7 +75,7 @@ unordered_map<GameObject, string> objectToStr{
         {skeleton,     "骷"},
 };
 // 假设每种物品的合成途径是唯一的
-unordered_map<GameObject, unordered_map<GameObject, int>> RecipeTable{
+unordered_map <GameObject, unordered_map<GameObject, int>> RecipeTable{
         {board,        {{wood,         1},}},
         {stick,        {{board,        2},}},
         {workbench,    {{board,        4},}},
@@ -137,6 +135,17 @@ unordered_map<GameObject, int> ToolDigLevel{
         {ironDraft,    3},
         {diamondDraft, 4},
 };
+
+/**
+ * 食物饱食度表
+ */
+unordered_map<GameObject, int> foodTastiness{
+        {apple, 3},
+};
+
+
+
+
 
 /**
  * 这个方块是否是可以被玩家、生物走路穿过的
@@ -199,12 +208,6 @@ bool isBlockBeCover(GameObject o) {
     return false;
 }
 
-/**
- * 食物饱食度表
- */
-unordered_map<GameObject, int> foodTastiness{
-        {apple, 3},
-};
 
 /**
  * 一个物品是否能够被玩家吃
@@ -217,6 +220,7 @@ bool isEatable(GameObject o) {
     }
     return false;
 }
+
 
 
 #endif //C__LEARN_OBJECT_H

@@ -1,4 +1,5 @@
 #include <iostream>
+
 #include "conio.h"  // getch()
 #include <vector>
 #include <map>
@@ -16,7 +17,6 @@
 #include "Player.h"
 #include "worldGenerator.h"
 #include "Animal.h"
-
 using namespace std;
 
 class World {

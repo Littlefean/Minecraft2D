@@ -5,7 +5,6 @@
 #ifndef C__LEARN_PROGRESSBAR_H
 #define C__LEARN_PROGRESSBAR_H
 
-using namespace std;
 
 /**
  * 进度条类
@@ -16,41 +15,26 @@ public:
     double maxValue;
     double value;
 
-    ProgressBar(double mv, double v) {
-        this->maxValue = mv;
-        this->value = v;
-    }
+    ProgressBar(double mv, double v);
 
     /**
      * 进度条更改值操作
      * 能够防止加爆了，减成负数了等情况
      * @param d
      */
-    void change(double d) {
-        this->value += d;
-        if (this->value > this->maxValue) {
-            this->value = this->maxValue;
-        }
-        if (this->value < 0) {
-            this->value = 0;
-        }
-    }
+    void change(double d);
 
     /**
      * 直接让进度条里的值顶满
      * 用于：血条补满
      */
-    void setMax() {
-        this->value = this->maxValue;
-    }
+    void setMax();
 
     /**
      * 当前条是不是满了的状态
      * @return
      */
-    bool isMax() {
-        return this->value >= this->maxValue;
-    }
+    [[nodiscard]] bool isMax() const;
 };
 
 
