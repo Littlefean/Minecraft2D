@@ -463,7 +463,7 @@ public:
 
 int main() {
     cout << "正在开始游戏" << endl;
-    World g(30, 30);
+    World g(100, 100);
     g.show1();
     g.play();
     // g.testPlay();

@@ -200,9 +200,9 @@ public:
     static void genOre(vector<vector<GameObject>> &world) {
         // Ìú¿ó  // todo
         NoiseSet2D ironNoise(uniform01());
-        ironNoise.addNoise(5, 20);
+        ironNoise.addNoise(4, 20);
         ironNoise.addNoise(5, 25);
-        ironNoise.addNoise(5, 5);
+        ironNoise.addNoise(4, 5);
         NoiseSet2D coalNoise(uniform01());
         coalNoise.addNoise(5, 20);
         coalNoise.addNoise(5, 25);
@@ -227,7 +227,7 @@ public:
                 if (world[y][x] == stone && coalNoise.getHeight(x, y) > 10) {
                     world[y][x] = coalBlock;
                 }
-                if (world[y][x] == stone && ironNoise.getHeight(x, y) > 10) {
+                if (world[y][x] == stone && ironNoise.getHeight(x, y) > 8) {
                     world[y][x] = ironBlock;
                 }
 
